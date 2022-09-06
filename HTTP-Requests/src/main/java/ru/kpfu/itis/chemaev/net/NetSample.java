@@ -41,20 +41,20 @@ public class NetSample {
 
         // post
         try {
-            URL postURL = new URL("https://gorest.co.in/public/v1/users");
-            HttpURLConnection postConnection = (HttpURLConnection) postURL.openConnection();
+            URL postUrl = new URL("https://gorest.co.in/public/v1/users");
+            HttpURLConnection postConnection = (HttpURLConnection) postUrl.openConnection();
             String token = "3247df66c027309df362aad144e8229d3333347d2c356a4a616c2f5a81847244";
-
 
             postConnection.setRequestMethod("POST");
 
             postConnection.setRequestProperty("Content-Type", "application/json");
             postConnection.setRequestProperty("Accept", "application/json");
-            postConnection.setRequestProperty("Authorization", "Bearer" + token);
+            postConnection.setRequestProperty("Authorization", "Bearer " + token);
 
             postConnection.setDoOutput(true);
 
-            String jsonInputString = "\"name\":\"Danil\"";
+            // email should be unique, in otherwise 422 status code will bee returned
+            String jsonInputString = "{\"name\":\"Danil Chemaev\", \"gender\":\"male\", \"email\":\"tenali.asaramakrishna2@gmail.com\", \"status\":\"active\"}";
 
             try (OutputStream outputStream = postConnection.getOutputStream()) {
                 byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
@@ -63,7 +63,10 @@ public class NetSample {
 
             System.out.println(postConnection.getResponseCode());
 
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(postConnection.getInputStream()))) {
+            try (BufferedReader reader =
+                         new BufferedReader(
+                                 new InputStreamReader(postConnection.getInputStream())
+                         )) {
                 StringBuilder content = new StringBuilder();
                 String input;
                 while ((input = reader.readLine()) != null) {
@@ -71,7 +74,6 @@ public class NetSample {
                 }
                 System.out.println(content.toString());
             }
-            postConnection.disconnect();
 
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
