@@ -1,4 +1,4 @@
-package ru.kpfu.itis.chemaev.net;
+package ru.kpfu.itis.chemaev.net.client;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 public class NetSample {
     public static void get() {
         try {
-            URL url = new URL("https://jsonplaceholder.typicode.com/posts?userId=1");
+            URL url = new URL("https://gorest.co.in/public/v1/users?name=Devajyoti Tagore");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestMethod("GET");
@@ -53,7 +53,7 @@ public class NetSample {
             postConnection.setDoOutput(true);
 
             // email should be unique, in otherwise 422 status code will bee returned
-            String jsonInputString = "{\"name\":\"Danil Chemaev\", \"gender\":\"male\", \"email\":\"tenali.asaramakrishna2@gmail.com\", \"status\":\"active\"}";
+            String jsonInputString = "{\"id\":\"2995\",\"name\":\"Danil Aboba\", \"gender\":\"male\", \"email\":\"asfkjghkasjhfg@asfg.ru\", \"status\":\"active\"}";
 
             try (OutputStream outputStream = postConnection.getOutputStream()) {
                 byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
@@ -115,7 +115,7 @@ public class NetSample {
 
             putConnection.setDoOutput(true);
 
-            String jsonInputString = "{\"name\":\"Danil Chemaev\", \"gender\":\"male\", \"email\":\"tenali.asaramakrishna2@gmail.com\", \"status\":\"active\"}";
+            String jsonInputString = "{\"id\":\"2995\",\"name\":\"Danil Aboba\", \"gender\":\"male\", \"email\":\"asfkjghkasjhfg@asfg.ru\", \"status\":\"active\"}";
 
             try (OutputStream outputStream = putConnection.getOutputStream()) {
                 byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
@@ -164,11 +164,11 @@ public class NetSample {
 
 
     public static void main(String[] args) {
-        get();
-        post();
-        head();
+//        post();
+//        get();
+//        head();
         put();
-        delete();
+//        delete();
 
     }
 
