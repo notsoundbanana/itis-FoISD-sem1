@@ -115,16 +115,9 @@ public class NetSample {
 
             putConnection.setDoOutput(true);
 
-            String jsonInputString = "{\"id\":\"2995\",\"name\":\"Danil Aboba\", \"gender\":\"male\", \"email\":\"asfkjghkasjhfg@asfg.ru\", \"status\":\"active\"}";
-
-            try (OutputStream outputStream = putConnection.getOutputStream()) {
-                byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
-                outputStream.write(input, 0, input.length);
-            }
-
             putConnection.getInputStream();
 
-//            String jsonInputString = "{\"name\":\"Danil Chemaev\", \"gender\":\"male\", \"email\":\"tenali.asaramakrishna2@gmail.com\", \"status\":\"active\"}";
+            String jsonInputString = "{\"name\":\"Danil Chemaev\", \"gender\":\"male\", \"email\":\"tenali.asaramakrishna2@gmail.com\", \"status\":\"active\"}";
 
             try (OutputStream outputStream = putConnection.getOutputStream()) {
                 byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
@@ -133,11 +126,6 @@ public class NetSample {
 
             System.out.println(putConnection.getResponseCode());
 
-
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        } catch (ProtocolException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
