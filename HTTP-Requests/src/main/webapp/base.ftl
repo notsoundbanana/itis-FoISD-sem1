@@ -7,6 +7,7 @@
 
 <div id="header">
     <h3> Header </h3>
+    <a href="/logout">Logout</a>
 </div>
 
 <div class="content1">

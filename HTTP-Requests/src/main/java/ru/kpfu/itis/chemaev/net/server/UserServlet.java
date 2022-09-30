@@ -1,5 +1,7 @@
 package ru.kpfu.itis.chemaev.net.server;
 
+import ru.kpfu.itis.chemaev.net.dto.UserDto;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,9 +13,15 @@ import java.util.List;
 @WebServlet(name = "userServlet", urlPatterns = "/users")
 public class UserServlet extends HttpServlet {
 
+    private static final List<UserDto> USERS = List.of(
+            new UserDto("Danil", "Chemaev"),
+            new UserDto("Ivan", "Ivanov"),
+            new UserDto("Stepan", "Stepanov")
+    );
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("users", List.of("Danil", "Nikita"));
+        req.setAttribute("users", USERS);
         req.getRequestDispatcher("users.ftl").forward(req, resp);
     }
 }
