@@ -1,4 +1,4 @@
-package ru.kpfu.itis.chemaev.net.server;
+package ru.kpfu.itis.chemaev.net.servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
