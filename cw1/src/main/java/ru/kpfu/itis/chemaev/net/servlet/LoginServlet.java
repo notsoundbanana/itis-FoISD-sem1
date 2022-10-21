@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet {
                 httpCookie.setMaxAge(24 * 60 * 60);
                 resp.addCookie(httpCookie);
 
-                resp.sendRedirect("main.html");
+                resp.sendRedirect("/");
             } else {
                 System.out.println("Invalid login or password");
                 req.setAttribute("error", "Invalid login or password");

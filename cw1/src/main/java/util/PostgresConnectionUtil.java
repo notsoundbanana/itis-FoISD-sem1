@@ -14,7 +14,7 @@ public class PostgresConnectionUtil {
         Properties properties = new Properties();
         try {
             properties.load(PostgresConnectionUtil.class.getResourceAsStream("/db.properties"));
-            System.out.println("DB loaded successfully");
+            System.out.println("Properties loaded successfully");
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
@@ -26,6 +26,7 @@ public class PostgresConnectionUtil {
                         properties.getProperty("db.username"),
                         properties.getProperty("db.password")
                 );
+                System.out.println("DB loaded successfully");
 
             } catch (ClassNotFoundException | SQLException e) {
                 throw new RuntimeException(e);
