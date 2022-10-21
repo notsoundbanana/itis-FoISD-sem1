@@ -1,5 +1,12 @@
 package ru.kpfu.itis.chemaev.net.servlet;
 
+import ru.kpfu.itis.chemaev.net.dao.UserDao;
+import ru.kpfu.itis.chemaev.net.dao.impl.UserDaoImpl;
+import ru.kpfu.itis.chemaev.net.model.User;
+import ru.kpfu.itis.chemaev.net.service.UserService;
+import ru.kpfu.itis.chemaev.net.service.impl.UserServiceImpl;
+
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -9,66 +16,32 @@ import java.io.IOException;
 
 @WebServlet(name = "registrationServlet", urlPatterns = "/registration")
 public class RegistrationServlet extends HttpServlet {
-
-    public static final String LOGIN = "login";
-    public static final String PASSWORD = "password123";
+    private final UserService userService = new UserServiceImpl();
+    private final UserDao userDao = new UserDaoImpl();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.sendRedirect("register.html");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("auth.ftl").forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String _username = req.getParameter("_username");
-        String _email = req.getParameter("_email");
-        String _password = req.getParameter("_password");
-        String _conpassword = req.getParameter("_conpassword");
-        String _remember_me = req.getParameter("_remember_me");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String login = req.getParameter("login");
+        String firstName = req.getParameter("firstname");
+        String lastName = req.getParameter("lastname");
+        String password = req.getParameter("password");
 
-        System.out.println(_username);
-        System.out.println(_email);
-        System.out.println(_password);
-        System.out.println(_conpassword);
-        System.out.println(_remember_me);
+//        System.out.print(login + firstName + lastName + password);
 
-//        String salt = PasswordUtil.generateSalt(512).get().toString();
-//        String key = PasswordUtil.hashPassword(_password, salt).get().toString();
+        User existsUserWithLogin = userDao.get(login);
 
-//        if(_password.equals(_conpassword)){
-            // добавление в бд юзера
-            // пересылка на страницу с заполнением персональных данных для выборп плана тренировок
-            // какого вы пола?
-            // что  хотите прорабоать (руки, грудь, пресс, ног, все тело)
-            // какая у вас цель (сбросить вес, нарастить массу, быть в форме)
-            // какая у вас сейчас форму (стройная, средняя, пышная)
-            // как вас зовут ?
-            // сколько вам лет ?
-            // укажите свой рост
-            // укажите свой вес ?
-            // как часто хотите тренироваться ?
+        if (existsUserWithLogin == null) {
+            userService.save(new User(login, firstName, lastName, password));
+            resp.sendRedirect("/login");
+        } else {
+            req.setAttribute("error", "this login already exists");
+            req.getRequestDispatcher("registration.html").forward(req, resp);
         }
-
-
-
-
-
-
-
-//        if (LOGIN.equals(login) && PASSWORD.equals(password)) {
-//            logger.info("User with username = {} logged in", login);
-//            HttpSession httpSession = req.getSession();
-//            httpSession.setAttribute("username", login);
-//            httpSession.setMaxInactiveInterval(60 * 60);
-//
-//            Cookie httpCookie = new Cookie("username", login);
-//            httpCookie.setMaxAge(24 * 60 * 60);
-//            resp.addCookie(httpCookie);
-//
-//            resp.sendRedirect("main.jsp");
-//        } else {
-//            resp.sendRedirect("/login");
-//        }
-//    }
+    }
 }
 
