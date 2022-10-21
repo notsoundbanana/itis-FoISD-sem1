@@ -21,26 +21,28 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("auth.ftl").forward(req, resp);
+        req.getRequestDispatcher("registration.ftl").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
-        String firstName = req.getParameter("firstname");
-        String lastName = req.getParameter("lastname");
+        String firstname = req.getParameter("firstname");
+        String lastname = req.getParameter("lastname");
         String password = req.getParameter("password");
 
-//        System.out.print(login + firstName + lastName + password);
+        System.out.println(login + " " + firstname + " " + lastname + " " + password);
 
-        User existsUserWithLogin = userDao.get(login);
+        User existingUserWithLogin = userDao.get(login);
 
-        if (existsUserWithLogin == null) {
-            userService.save(new User(login, firstName, lastName, password));
+        if (existingUserWithLogin == null) {
+            userService.save(new User(login, firstname, lastname, password));
             resp.sendRedirect("/login");
+            System.out.println("Successful registration");
         } else {
+            System.out.println("this login already exists");
             req.setAttribute("error", "this login already exists");
-            req.getRequestDispatcher("registration.html").forward(req, resp);
+            req.getRequestDispatcher("registration.ftl").forward(req, resp);
         }
     }
 }

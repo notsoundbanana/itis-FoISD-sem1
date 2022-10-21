@@ -5,6 +5,7 @@ import ru.kpfu.itis.chemaev.net.dao.impl.UserDaoImpl;
 import ru.kpfu.itis.chemaev.net.model.User;
 import util.PasswordUtil;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
 
@@ -27,7 +28,7 @@ public class LoginServlet extends HttpServlet {
 
         User tempUser = userDao.get(login);
         if (tempUser != null) {
-            if (login.equals(tempUser.getLogin()) && password.equals(encryptPassword)) {
+            if (login.equals(tempUser.getLogin()) && tempUser.getPassword().equals(encryptPassword)) {
                 HttpSession httpSession = req.getSession();
                 httpSession.setAttribute("login", login);
                 httpSession.setMaxInactiveInterval(60 * 60);
@@ -38,11 +39,14 @@ public class LoginServlet extends HttpServlet {
 
                 resp.sendRedirect("main.html");
             } else {
+                System.out.println("Invalid login or password");
                 req.setAttribute("error", "Invalid login or password");
                 resp.sendRedirect("/");
             }
         } else {
-            resp.sendRedirect("/login");
+            System.out.println("User with this login does not exist");
+            req.setAttribute("error", "User with this login does not exist");
+            req.getRequestDispatcher("login.ftl").forward(req, resp);
         }
     }
 }

@@ -19,7 +19,7 @@ public class UserDaoImpl implements UserDao {
     //language=SQL
     private static final String SQL_SELECT_BY_ID = "select * from users where id = ?;";
 
-    private static final String SQL_SAVE = "INSERT into users (login, firstname, lastname, password) VALUES (?, ?, ?, ?);";
+    private static final String SQL_SAVE = "INSERT into users (login, first_name, last_name, password) VALUES (?, ?, ?, ?);";
 
     //language=SQL
     public static final String SQL_SELECT_BY_LOGIN = "select * from users where login = ?;";
@@ -35,8 +35,8 @@ public class UserDaoImpl implements UserDao {
             return new User(
                     resultSet.getInt("id"),
                     resultSet.getString("login"),
-                    resultSet.getString("firstname"),
-                    resultSet.getString("lastname"),
+                    resultSet.getString("first_name"),
+                    resultSet.getString("last_name"),
                     resultSet.getString("password"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -58,6 +58,7 @@ public class UserDaoImpl implements UserDao {
             }
 
         } catch (SQLException e) {
+            LOGGER.warn("Failed execute save query", e);
             return null;
         }
     }
@@ -91,8 +92,11 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setString(4, user.getPassword());
 
             preparedStatement.executeUpdate();
+            System.out.println("User has been successfully saved");
+
+
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            LOGGER.warn("Failed execute save query", e);
         }
     }
 
@@ -109,28 +113,29 @@ public class UserDaoImpl implements UserDao {
 
              statement.executeUpdate();
 
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
-    public User get(int id) {
+    public User get(String login) {
         try {
-            PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID);
-            statement.setInt(1, id);
+            PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_LOGIN);
+            statement.setString(1, login);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
+                    System.out.println("return userMapper.apply(resultSet);");
                     return userMapper.apply(resultSet);
                 } else {
+                    System.out.println("Return null");
                     return null;
                 }
             }
 
         } catch (SQLException e) {
+            LOGGER.warn("Failed execute save query", e);
             return null;
         }
     }
