@@ -20,8 +20,8 @@ public class Client implements HttpClient {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod(requestType);
         headers.forEach((key, value) -> connection.setRequestProperty(key, value));
-        connection.setConnectTimeout(5000);
-        connection.setReadTimeout(5000);
+        connection.setConnectTimeout(7000);
+        connection.setReadTimeout(7000);
         System.out.println(connection.getResponseCode());
         return connection;
     }
@@ -46,9 +46,9 @@ public class Client implements HttpClient {
 
             HttpURLConnection connection = setConnection("GET", urlWithParams, headers);
 
-            System.out.println(connection.getResponseCode());
+            System.out.println("Getting data from API...");
 
-//            res = getResponse(connection);
+            System.out.println(connection.getResponseCode());
 
             res = getContent(connection);
 

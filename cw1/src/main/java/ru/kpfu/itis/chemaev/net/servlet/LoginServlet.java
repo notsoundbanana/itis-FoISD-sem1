@@ -3,7 +3,7 @@ package ru.kpfu.itis.chemaev.net.servlet;
 import ru.kpfu.itis.chemaev.net.dao.UserDao;
 import ru.kpfu.itis.chemaev.net.dao.impl.UserDaoImpl;
 import ru.kpfu.itis.chemaev.net.model.User;
-import util.PasswordUtil;
+import ru.kpfu.itis.chemaev.net.util.PasswordUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

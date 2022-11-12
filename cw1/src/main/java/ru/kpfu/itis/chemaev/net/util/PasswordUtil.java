@@ -1,4 +1,4 @@
-package util;
+package ru.kpfu.itis.chemaev.net.util;
 
 import jakarta.xml.bind.DatatypeConverter;
 import org.slf4j.Logger;

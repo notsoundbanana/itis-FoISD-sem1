@@ -1,4 +1,4 @@
-package util;
+package ru.kpfu.itis.chemaev.net.util;
 
 import ru.kpfu.itis.chemaev.net.client.Client;
 
@@ -9,7 +9,7 @@ import java.util.Properties;
 
 public class OpenWeatherUtil {
 
-    public static Object getTemperature(String city) throws IOException {
+    public static Object getWeather(String city) throws IOException {
         Properties properties = new Properties();
         try {
             properties.load(OpenWeatherUtil.class.getResourceAsStream("/openWeather.properties"));
@@ -27,8 +27,7 @@ public class OpenWeatherUtil {
         params.put("appid", properties.getProperty("apiKey"));
 
         Client client = new Client();
-        System.out.println(client.get(url, headers, params));
 
-        return null;
+        return client.get(url, headers, params);
     }
 }

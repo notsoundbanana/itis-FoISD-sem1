@@ -1,4 +1,4 @@
-package util;
+package ru.kpfu.itis.chemaev.net.util;
 
 import java.io.IOException;
 import java.sql.Connection;

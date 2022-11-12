@@ -5,7 +5,7 @@ import ru.kpfu.itis.chemaev.net.dao.impl.UserDaoImpl;
 import ru.kpfu.itis.chemaev.net.dto.UserDto;
 import ru.kpfu.itis.chemaev.net.model.User;
 import ru.kpfu.itis.chemaev.net.service.UserService;
-import util.PasswordUtil;
+import ru.kpfu.itis.chemaev.net.util.PasswordUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;

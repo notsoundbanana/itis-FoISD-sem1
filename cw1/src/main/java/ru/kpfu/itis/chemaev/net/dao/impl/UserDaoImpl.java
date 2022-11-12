@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.kpfu.itis.chemaev.net.dao.UserDao;
 import ru.kpfu.itis.chemaev.net.model.User;
-import util.PostgresConnectionUtil;
+import ru.kpfu.itis.chemaev.net.util.PostgresConnectionUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
