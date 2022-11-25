@@ -15,20 +15,16 @@ public class Main extends Application {
     private static final int WIDTH = 800;
     private static final int HEIGHT = 800;
 
+    public static final int SNAKE_START_WIDTH = 10;
+    public static final int SNAKE_START_HEIGHT = 10;
     private static final int FOOD_WIDTH = 10;
     private static final int FOOD_HEIGHT = 10;
 
-    private static final int SNAKE_WIDTH = 10;
-    private static final int SNAKE_HEIGHT = 10;
-
-    private static final int STEP = 10;
 
     private Pane root;
     private Random random;
     private Rectangle food;
-    private Rectangle snake;
-
-    private Direction currentDirection;
+    private Snake snake;
 
 
     private void newFood() {
@@ -37,28 +33,52 @@ public class Main extends Application {
         root.getChildren().add(food);
     }
 
-    private void newSnake() {
-        snake = new Rectangle(WIDTH / 2, HEIGHT / 2, SNAKE_WIDTH, SNAKE_HEIGHT);
-        snake.setFill(Color.BLACK);
-        root.getChildren().add(snake);
+    private void deleteFood(Rectangle food) {
+        root.getChildren().remove(food);
     }
 
-    private void step() {
-        if (currentDirection == Direction.UP) {
-            snake.setY(snake.getY() - STEP);
-        } else if (currentDirection == Direction.DOWN) {
-            snake.setY(snake.getY() + STEP);
-        } else if (currentDirection == Direction.LEFT) {
-            snake.setX(snake.getX() - STEP);
-        } else if (currentDirection == Direction.RIGHT) {
-            snake.setX(snake.getX() + STEP);
-        }
+    public void newSnake(int width, int height, int snakeWidth, int snakeHeight) {
+        snake = new Snake(width, height, snakeWidth, snakeHeight);
+        snake.setFill(Color.BLACK);
+        root.getChildren().add(snake);
+
+    }
+
+    private boolean hit() {
+        return food.intersects(snake.getBoundsInLocal());
     }
 
     private void move() {
         Platform.runLater(() -> {
-            step();
+            snake.step();
+            adjustLocation();
+            if (hit()) {
+                snake.eat();
+                increaseSizeOfSnake();
+                deleteFood(food);
+                newFood();
+            }
         });
+    }
+
+    private void adjustLocation() {
+        if (snake.getX() < 0) {
+            snake.setX(WIDTH);
+        } else if (snake.getX() > WIDTH) {
+            snake.setX(0);
+        }
+        if (snake.getY() < 0) {
+            snake.setY(HEIGHT);
+        } else if (snake.getY() > HEIGHT) {
+            snake.setY(0);
+        }
+    }
+
+    private void increaseSizeOfSnake() {
+        if (snake.getSnakeCurrentWidth() < WIDTH || snake.getSnakeCurrentHeight() < HEIGHT) {
+            snake.widthProperty().setValue(snake.getSnakeCurrentWidth());
+            snake.heightProperty().setValue(snake.getSnakeCurrentHeight());
+        }
     }
 
     @Override
@@ -66,16 +86,15 @@ public class Main extends Application {
         root = new Pane();
         root.setPrefSize(WIDTH, HEIGHT);
         random = new Random();
-        currentDirection = Direction.UP;
 
         newFood();
-        newSnake();
+        newSnake(WIDTH / 2, HEIGHT / 2, SNAKE_START_WIDTH, SNAKE_START_HEIGHT);
 
         Runnable r = () -> {
             try {
                 for (; ; ) {
                     move();
-                    Thread.sleep(100);
+                    Thread.sleep(50);
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
@@ -85,10 +104,10 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         scene.setOnKeyPressed(key -> {
             switch (key.getCode()) {
-                case UP -> currentDirection = Direction.UP;
-                case DOWN -> currentDirection = Direction.DOWN;
-                case LEFT -> currentDirection = Direction.LEFT;
-                case RIGHT -> currentDirection = Direction.RIGHT;
+                case UP -> snake.setCurrentDirection(Direction.UP);
+                case DOWN -> snake.setCurrentDirection(Direction.DOWN);
+                case LEFT -> snake.setCurrentDirection(Direction.LEFT);
+                case RIGHT -> snake.setCurrentDirection(Direction.RIGHT);
             }
         });
 
