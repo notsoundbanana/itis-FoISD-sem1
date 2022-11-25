@@ -6,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.Random;
@@ -19,12 +21,14 @@ public class Main extends Application {
     public static final int SNAKE_START_HEIGHT = 10;
     private static final int FOOD_WIDTH = 10;
     private static final int FOOD_HEIGHT = 10;
+    private static int SCORE = 0;
 
 
     private Pane root;
     private Random random;
     private Rectangle food;
     private Snake snake;
+    private Text score;
 
 
     private void newFood() {
@@ -55,6 +59,8 @@ public class Main extends Application {
             if (hit()) {
                 snake.eat();
                 increaseSizeOfSnake();
+                SCORE += 1;
+                score.setText("SCORE: " + SCORE);
                 deleteFood(food);
                 newFood();
             }
@@ -75,10 +81,12 @@ public class Main extends Application {
     }
 
     private void increaseSizeOfSnake() {
-        if (snake.getSnakeCurrentWidth() < WIDTH || snake.getSnakeCurrentHeight() < HEIGHT) {
-            snake.widthProperty().setValue(snake.getSnakeCurrentWidth());
-            snake.heightProperty().setValue(snake.getSnakeCurrentHeight());
+        if (snake.getSnakeCurrentWidth() >= WIDTH / 2 || snake.getSnakeCurrentHeight() >= HEIGHT / 2) {
+            snake.setSnakeCurrentWidth(SNAKE_START_WIDTH);
+            snake.setSnakeCurrentHeight(SNAKE_START_HEIGHT);
         }
+        snake.widthProperty().setValue(snake.getSnakeCurrentWidth());
+        snake.heightProperty().setValue(snake.getSnakeCurrentHeight());
     }
 
     @Override
@@ -86,6 +94,9 @@ public class Main extends Application {
         root = new Pane();
         root.setPrefSize(WIDTH, HEIGHT);
         random = new Random();
+        score = new Text(5, 30, "SCORE: 0");
+        score.setFont(new Font(30));
+        root.getChildren().add(score);
 
         newFood();
         newSnake(WIDTH / 2, HEIGHT / 2, SNAKE_START_WIDTH, SNAKE_START_HEIGHT);

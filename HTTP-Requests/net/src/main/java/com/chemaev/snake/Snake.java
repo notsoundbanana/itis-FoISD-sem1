@@ -45,4 +45,12 @@ public class Snake extends Rectangle {
     public int getSnakeCurrentHeight() {
         return snakeCurrentHeight;
     }
+
+    public void setSnakeCurrentWidth(int snakeCurrentWidth) {
+        this.snakeCurrentWidth = snakeCurrentWidth;
+    }
+
+    public void setSnakeCurrentHeight(int snakeCurrentHeight) {
+        this.snakeCurrentHeight = snakeCurrentHeight;
+    }
 }
